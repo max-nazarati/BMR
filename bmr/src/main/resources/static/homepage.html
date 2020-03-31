@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+		xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+	<head>
+	<title>WGDMS homepage</title>
+	</head>
+	
+	<body>
+		<form id="movietitleform" action="/textsubmission">
+			enter space separated movie titles<br>
+			<input type="text"><br>
+			<input type="submit" value="submit">
+		</form><br>
+	
+		<form id="moviefileform" action="/filesubmission">
+			<label for="fileuploadarea">Or provide a .txt file to parse from</label><br>
+			<input type="file" id="fileuploadarea">
+		</form>
+	</body>
+</html>
