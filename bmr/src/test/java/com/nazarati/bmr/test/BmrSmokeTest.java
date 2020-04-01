@@ -1,13 +1,13 @@
 package com.nazarati.bmr.test;
 
-import static org.hamcrest.Matchers.equalTo;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +25,8 @@ public class BmrSmokeTest {
 	
 	@Autowired
 	private MockMvc mockMvc;
+	
+	private String homepage = "homepage.html";
 
 	@Test
 	public void contextLoads() throws Exception {
@@ -33,21 +35,21 @@ public class BmrSmokeTest {
 	
 	@Test
 	public void homepageControllerStartingBehaviourTest() throws Exception {
-		mockMvc.perform(get("/")).andExpect(view().name("homepage.html"));
+		mockMvc.perform(get("/")).andExpect(view().name(homepage));
 	}
 	
 	@Test
 	public void homepageControllerTextSubmitBehaviourTest() throws Exception {
 		mockMvc.perform(post("/textsubmission"))
-		.andDo(print()).andExpect(status().isOk())
-		.andExpect(content().string(equalTo("text submission")));
+		.andExpect(status().isOk())
+		.andExpect(view().name(homepage));
 	}
 	
 	@Test
 	public void homepageControllerFileSubmitBehaviourTest() throws Exception{
 		mockMvc.perform(post("/filesubmission"))
-		.andDo(print()).andExpect(status().isOk())
-		.andExpect(content().string(equalTo("file submission")));
+		.andExpect(status().isOk())
+		.andExpect(view().name(homepage));
 	}
 
 }
