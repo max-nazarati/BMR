@@ -37,19 +37,4 @@ public class BmrSmokeTest {
 	public void homepageControllerStartingBehaviourTest() throws Exception {
 		mockMvc.perform(get("/")).andExpect(view().name(homepage));
 	}
-	
-	@Test
-	public void homepageControllerTextSubmitBehaviourTest() throws Exception {
-		mockMvc.perform(post("/textsubmission"))
-		.andExpect(status().isOk())
-		.andExpect(view().name(homepage));
-	}
-	
-	@Test
-	public void homepageControllerFileSubmitBehaviourTest() throws Exception{
-		mockMvc.perform(post("/filesubmission"))
-		.andExpect(status().isOk())
-		.andExpect(view().name(homepage));
-	}
-
 }

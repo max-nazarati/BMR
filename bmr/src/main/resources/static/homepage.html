@@ -6,15 +6,16 @@
 	</head>
 	
 	<body>
-		<form id="movietitleform" action="/textsubmission">
+		<form id="movietitleform" action="/textsubmission" method="POST">
 			enter space separated movie titles<br>
-			<input type="text"><br>
+			<input name="movies" type="text"><br>
 			<input type="submit" value="submit">
 		</form><br>
 	
-		<form id="moviefileform" action="/filesubmission">
+		<form id="moviefileform" action="/filesubmission" method="POST" enctype="multipart/form-data">
 			<label for="fileuploadarea">Or provide a .txt file to parse from</label><br>
-			<input type="file" id="fileuploadarea">
+			<input type="file" name="file" id="fileuploadarea">
+			<input type="submit" value="submit">		
 		</form>
 	</body>
 </html>

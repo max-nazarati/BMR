@@ -20,6 +20,7 @@ public class TextFormService {
 		this.movies = parseMovieString(movies);
 	}
 	private Set<String> parseMovieString(String movies) {
+		// expecting movie titles to be separated by single quotes
 		Set<String> res = new HashSet<String>(Arrays.asList(movies.split("' +'|'")));
 		res.remove("");
 		return res;
