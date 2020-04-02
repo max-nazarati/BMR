@@ -42,16 +42,17 @@ public class FormTest {
 	
 	@Test
 	public void fileParseTest() throws Exception {
-	MockMultipartFile f1 = new MockMultipartFile("f1", "file1", "text/plain", "random text\ntext".getBytes());
-	MockMultipartFile f2 = new MockMultipartFile("f2", "file2", "text/plain", "    \n  ".getBytes());
+		// TODO: Check if Mockito can help with mocking FileFormService so that we can remove it from HomeController
+		MockMultipartFile f1 = new MockMultipartFile("f1", "file1", "text/plain", "random text\ntext".getBytes());
+		MockMultipartFile f2 = new MockMultipartFile("f2", "file2", "text/plain", "    \n  ".getBytes());
 	
-	Set<String> testres = new HashSet<String>(Arrays.asList("random text", "text"));
-	FileFormService ffs = new FileFormService(f1);
-	assertThat(ffs.parseFile()).isEqualTo(testres);
+		Set<String> testres = new HashSet<String>(Arrays.asList("random text", "text"));
+		FileFormService ffs = new FileFormService(f1);
+		assertThat(ffs.parseFile()).isEqualTo(testres);
 	
-	Set<String> testres2 = new HashSet<String>(Arrays.asList("    ", "  "));
-	ffs = new FileFormService(f2);
-	assertThat(ffs.parseFile()).isEqualTo(testres2);
+		Set<String> testres2 = new HashSet<String>(Arrays.asList("    ", "  "));
+		ffs = new FileFormService(f2);
+		assertThat(ffs.parseFile()).isEqualTo(testres2);
 	}
 	
 	
