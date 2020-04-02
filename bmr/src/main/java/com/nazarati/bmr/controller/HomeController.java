@@ -1,5 +1,6 @@
 package com.nazarati.bmr.controller;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
@@ -46,8 +47,9 @@ public class HomeController {
 	}
 	
 	@PostMapping("/filesubmission")
-	public RedirectView fileSubmissionResponse(@RequestParam("file") MultipartFile file) {
+	public RedirectView fileSubmissionResponse(@RequestParam("file") MultipartFile file) throws IOException, URISyntaxException, UnirestException {
 		ffs = new FileFormService(file);
+		System.out.println(new RecommenderService(ffs.movies()).recommend().toString());
 		return new RedirectView("/");
 	}
 	

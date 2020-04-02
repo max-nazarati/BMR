@@ -12,19 +12,29 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class FileFormService {
-	public MultipartFile file;
+	private MultipartFile file;
+	private Set<String> movies = new HashSet<String>();
 
 	public FileFormService() {
-		// TODO Auto-generated constructor stub
 	}
-	
-	public FileFormService(MultipartFile file) {
+
+
+	public FileFormService(MultipartFile file) throws IOException {
 		this.file = file;
+		movies = parseFile();
 	}
-	
+
+
 	public MultipartFile file() {
 		return file;
 	}
+
+
+	public Set<String> movies(){
+		return movies;
+	}
+
+
 	public Set<String> parseFile() throws IOException{
 		String s = new String(file.getBytes(), "UTF-8");
 		Set<String> res = new HashSet<String>(Arrays.asList(s.split("\r\n|\n|\r")));
