@@ -5,13 +5,16 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
@@ -33,15 +36,31 @@ public class RecommenderService {
 	}
 	
 	public Set<String> recommend() throws URISyntaxException, MalformedURLException, UnirestException, UnsupportedEncodingException{
-		String movie = "Avengers: Endgame";
-		String req = "/search/movie/?" + key + "&query=" + encode(movie);
-		System.out.println(req);
-		HttpResponse<JsonNode> resp = Unirest.get(tmdb + req).asJson();
-		Gson gson = new GsonBuilder().setPrettyPrinting().create();
-		JsonParser jp = new JsonParser();
-		JsonElement je = jp.parse(resp.getBody().toString());
-		String prettyJsonString = gson.toJson(je);
-		System.out.println(prettyJsonString);
+		Set<String> recommendations = new HashSet<String>();
+		for (String movie : watchedMovies) {
+			Gson gson = new GsonBuilder().setPrettyPrinting().create();
+			JsonParser jp = new JsonParser();
+			JsonElement je;
+			// figure out IMDB ID of the movie title
+			String req = "/search/movie/?" + key + "&query=" + encode(movie);
+			HttpResponse<JsonNode> resp = Unirest.get(tmdb + req).asJson();
+			je = jp.parse(resp.getBody().toString());
+			int recommendationId = je.getAsJsonObject().get("results")
+					.getAsJsonArray().get(0).getAsJsonObject().get("id").getAsInt();
+			
+			// use now known IMDB ID to search for recommended movies
+			String req2 = "/movie/" + recommendationId + "/recommendations?" + key;
+			HttpResponse<JsonNode> resp2 = Unirest.get(tmdb + req2).asJson();
+			je = jp.parse(resp2.getBody().toString());
+			
+			// extract original_original title from the recommendations JSON Object
+			JsonArray arr = je.getAsJsonObject().get("results").getAsJsonArray();
+			for (int i = 0; i < arr.size(); i++) {
+				recommendations.add(arr.get(i).getAsJsonObject()
+						.get("original_title").getAsString());
+			}
+		}
+		System.out.println(recommendations.toString());
 		return null;
 	}
 	

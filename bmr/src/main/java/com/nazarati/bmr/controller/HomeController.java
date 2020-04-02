@@ -40,7 +40,7 @@ public class HomeController {
 	@PostMapping("/textsubmission")
 	public RedirectView textSubmissionResponse(@RequestParam("movies") String movieString) throws UnirestException, MalformedURLException, URISyntaxException, UnsupportedEncodingException {
 		TextFormService tfs = new TextFormService(movieString);
-		RecommenderService rs = new RecommenderService();
+		RecommenderService rs = new RecommenderService(tfs.movies());
 		rs.recommend();
 		return new RedirectView("/");
 	}
