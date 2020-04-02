@@ -53,15 +53,14 @@ public class RecommenderService {
 			HttpResponse<JsonNode> resp2 = Unirest.get(tmdb + req2).asJson();
 			je = jp.parse(resp2.getBody().toString());
 			
-			// extract original_original title from the recommendations JSON Object
+			// extract original_title from the recommendations JSON Object
 			JsonArray arr = je.getAsJsonObject().get("results").getAsJsonArray();
 			for (int i = 0; i < arr.size(); i++) {
 				recommendations.add(arr.get(i).getAsJsonObject()
 						.get("original_title").getAsString());
 			}
 		}
-		System.out.println(recommendations.toString());
-		return null;
+		return recommendations;
 	}
 	
 	private String encode(String val) throws UnsupportedEncodingException {
