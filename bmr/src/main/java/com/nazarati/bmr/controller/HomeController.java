@@ -17,7 +17,6 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import com.nazarati.bmr.service.FileFormService;
 import com.nazarati.bmr.service.RecommenderService;
 import com.nazarati.bmr.service.TextFormService;
-import com.nazarati.bmr.storage.BmrStorageService;
 import com.nazarati.bmr.storage.StorageService;
 
 @Controller
