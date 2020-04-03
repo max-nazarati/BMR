@@ -1,0 +1,9 @@
+@charset "UTF-8";
+
+#moviegrid{
+	display: inline-grid;
+}
+
+figure{
+	width:30%;
+}
