@@ -5,7 +5,7 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
@@ -35,7 +35,7 @@ public class RecommenderService {
 	}
 	
 	public Set<String> recommend() throws URISyntaxException, MalformedURLException, UnirestException, UnsupportedEncodingException{
-		Set<String> recommendations = new HashSet<String>();
+		Set<String> recommendations = new LinkedHashSet<String>();
 		for (String movie : watchedMovies) {
 			Gson gson = new GsonBuilder().setPrettyPrinting().create();
 			JsonParser jp = new JsonParser();
@@ -46,7 +46,9 @@ public class RecommenderService {
 			je = jp.parse(resp.getBody().toString());
 			int recommendationId = je.getAsJsonObject().get("results")
 					.getAsJsonArray().get(0).getAsJsonObject().get("id").getAsInt();
-			
+			// dubugging
+			System.out.println(je.getAsJsonObject().get("results")
+					.getAsJsonArray().get(0).getAsJsonObject().get("original_title").getAsString());
 			// use now known IMDB ID to search for recommended movies
 			String req2 = "/movie/" + recommendationId + "/recommendations?" + key;
 			HttpResponse<JsonNode> resp2 = Unirest.get(tmdb + req2).asJson();

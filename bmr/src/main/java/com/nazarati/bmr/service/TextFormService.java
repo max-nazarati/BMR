@@ -1,7 +1,7 @@
 package com.nazarati.bmr.service;
 
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ public class TextFormService {
 	}
 	private Set<String> parseMovieString(String movies) {
 		// expecting movie titles to be separated by single quotes
-		Set<String> res = new HashSet<String>(Arrays.asList(movies.split("' +'|'")));
+		Set<String> res = new LinkedHashSet<String>(Arrays.asList(movies.split("' +'|'")));
 		res.remove("");
 		return res;
 	}
