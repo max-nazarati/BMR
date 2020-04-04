@@ -6,6 +6,10 @@
 	</head>
 	
 	<body>
+		<div class="errordiv">
+			<span th:if="${badmovie == 'true'}">bad movie name(s)</span>
+		</div>
+		
 		<form id="movietitleform" action="/textsubmission" method="POST">
 			enter space separated movie titles, each title surrounded by single quotes<br>
 			<input name="movies" type="text"><br>
@@ -17,10 +21,10 @@
 			<input type="file" name="file" id="fileuploadarea">
 			<input type="submit" value="submit">		
 		</form>
-		<div id="moviegrid" name="moviegrid">
+		<div id="moviegrid" name="moviegrid" th:if="${successfulquery == true}">
 			<figure th:each="poster, iter: ${recommendationposters}">
-				<img th:src="${poster}" alt="no poster">
-				<figcaption th:text="${recommendations[iter.index]}"></figcaption>
+				<img th:src="${poster}" alt="no poster found.">
+				<figcaption th:text="${'Title: ' + recommendations[iter.index]}"></figcaption>
 			</figure>
 		</div>
 	</body>

@@ -8,3 +8,12 @@
 figure{
 	width:30%;
 }
+
+.errordiv {
+	background-color: red;
+	color: white;
+}
+
+img {
+	text-decoration: underline;
+}

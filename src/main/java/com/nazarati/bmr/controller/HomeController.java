@@ -43,12 +43,17 @@ public class HomeController {
 	public String homepageController(
 			@ModelAttribute(name="recommendations") String recs,
 			@ModelAttribute(name="recommendationposters") String posters,
+			@ModelAttribute(name="badmovie") String badMovieError,
 			Model model) {
-		if (recs != null) {
-			System.out.println(posters);
+		model.addAttribute("successfulquery", false);
+		
+		if (!recs.isEmpty() && !posters.isEmpty()) {
+			model.addAttribute("successfulquery", true);
 			model.addAttribute("recommendations", recs.split(","));
-			model.addAttribute("recommendationposters", posters.split(","));
-
+			model.addAttribute("recommendationposters", posters.split(","));	
+		}
+		if (badMovieError == "true") {
+			model.addAttribute("badmovie", badMovieError);
 		}
 		return homepage;
 	}
@@ -60,9 +65,8 @@ public class HomeController {
 		
 		TextFormService tfs = new TextFormService(movieString);
 		RecommenderService rs = new RecommenderService(tfs.movies());
-		Pair<Set<String>, Set<String>> res = rs.recommend();
-		attributes.addAttribute("recommendations", res.getValue0());
-		attributes.addAttribute("recommendationposters", res.getValue1());
+		Pair<Set<String>, Set<String>> res = rs.recommend(attributes);
+		addRecommendations(attributes, res);
 
 		return new RedirectView("/");
 	}
@@ -72,10 +76,14 @@ public class HomeController {
 			@RequestParam("file") MultipartFile file,
 			RedirectAttributes attributes) throws IOException, URISyntaxException, UnirestException {
 		ffs = new FileFormService(file);
-		Pair<Set<String>, Set<String>> res = new RecommenderService(ffs.movies()).recommend();
-		attributes.addAttribute("recommendations", res.getValue0());
-		attributes.addAttribute("recommendationposters", res.getValue1());
+		Pair<Set<String>, Set<String>> res = new RecommenderService(ffs.movies()).recommend(attributes);
+		addRecommendations(attributes, res);
 		return new RedirectView("/");
 	}
-	
+	private void addRecommendations(RedirectAttributes attributes, Pair<Set<String>, Set<String>> res) {
+		if (!(res.getValue0().isEmpty() && res.getValue1().isEmpty())) {
+			attributes.addAttribute("recommendations", res.getValue0());
+			attributes.addAttribute("recommendationposters", res.getValue1());
+		}
+	}
 }
