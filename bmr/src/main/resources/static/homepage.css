@@ -2,6 +2,7 @@
 
 #moviegrid{
 	display: inline-grid;
+	grid-template-columns: 190px 190px 190px 190px;
 }
 
 figure{
