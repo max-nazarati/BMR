@@ -60,11 +60,14 @@ public class RecommenderService {
 			
 			// extract original_title from the recommendations JSON Object
 			JsonArray arr = je.getAsJsonObject().get("results").getAsJsonArray();
-			for (int i = 0; i < arr.size()/4; i++) {
+			int maxMovieAmount = arr.size();
+			if (maxMovieAmount >= 20)
+				maxMovieAmount /= 3;
+			for (int i = 0; i < maxMovieAmount; i++) {
 				// only take the top 25% of the suggestions
 				String date = arr.get(i).getAsJsonObject().get("release_date").getAsString();
 				int dateInt = Integer.parseInt(date.substring(0, 4));
-				if (dateInt <= 1990)
+				if (dateInt <= 2010)
 					continue;
 					recommendations.add(arr.get(i).getAsJsonObject()
 						.get("original_title").getAsString());
