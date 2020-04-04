@@ -47,11 +47,14 @@ public class RecommenderService {
 			String req = "/search/movie/?" + key + "&query=" + encode(movie);
 			HttpResponse<JsonNode> resp = Unirest.get(tmdb + req).asJson();
 			je = jp.parse(resp.getBody().toString());
-			int recommendationId = je.getAsJsonObject().get("results")
+			
+			if (je.getAsJsonObject().isJsonNull())
+				continue;
+			int movieId = je.getAsJsonObject().get("results")
 					.getAsJsonArray().get(0).getAsJsonObject().get("id").getAsInt();
 
 			// use now known IMDB ID to search for recommended movies
-			String req2 = "/movie/" + recommendationId + "/recommendations?" + key;
+			String req2 = "/movie/" + movieId + "/recommendations?" + key;
 			HttpResponse<JsonNode> resp2 = Unirest.get(tmdb + req2).asJson();
 			je = jp.parse(resp2.getBody().toString());
 			
@@ -59,13 +62,17 @@ public class RecommenderService {
 			JsonArray arr = je.getAsJsonObject().get("results").getAsJsonArray();
 			for (int i = 0; i < arr.size()/4; i++) {
 				// only take the top 25% of the suggestions
-				recommendations.add(arr.get(i).getAsJsonObject()
+				String date = arr.get(i).getAsJsonObject().get("release_date").getAsString();
+				int dateInt = Integer.parseInt(date.substring(0, 4));
+				if (dateInt <= 1990)
+					continue;
+					recommendations.add(arr.get(i).getAsJsonObject()
 						.get("original_title").getAsString());
 				recommendationPosters.add(posterPath + arr.get(i).getAsJsonObject()
 						.get("poster_path").getAsString());
 			}
 		}
-		return new Pair(recommendations, recommendationPosters);
+		return new Pair<Set<String>, Set<String>>(recommendations, recommendationPosters);
 	}
 	
 	private String encode(String val) throws UnsupportedEncodingException {
