@@ -65,12 +65,8 @@ public class RecommenderService {
 			
 			// extract original_title from the recommendations JSON Object
 			JsonArray arr = je.getAsJsonObject().get("results").getAsJsonArray();
-			int maxMovieAmount = arr.size();
 			// only take the top 25% of the suggestions
-			if (maxMovieAmount >= 20)
-				maxMovieAmount /= 3;
-			
-			for (int i = 0; i < maxMovieAmount; i++) {
+			for (int i = 0; i < arr.size(); i++) {
 				if (!arr.get(i).getAsJsonObject().get("original_title").isJsonNull()) {
 					recommendations.add(arr.get(i).getAsJsonObject()
 						.get("original_title").getAsString());
