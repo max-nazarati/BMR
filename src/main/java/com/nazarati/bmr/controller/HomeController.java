@@ -67,29 +67,33 @@ public class HomeController {
 	@PostMapping("/textsubmission")
 	public RedirectView textSubmissionResponse(
 			@RequestParam("movies") String movieString,
-			RedirectAttributes attributes) throws UnirestException, MalformedURLException, URISyntaxException, UnsupportedEncodingException {
-		
-		TextFormService tfs = new TextFormService(movieString);
-		RecommenderService rs = new RecommenderService(tfs.movies());
-		Pair<Set<String>, Set<String>> res = rs.recommend(attributes);
-		addRecommendations(attributes, res);
-
-		return new RedirectView(formRedirectAddress);
+			RedirectAttributes attributes) 
+					throws UnirestException, MalformedURLException, URISyntaxException, UnsupportedEncodingException 
+	{	
+		return makeRecommendations(new TextFormService(movieString).movies(), attributes);
 	}
 	
 	@PostMapping("/filesubmission")
 	public RedirectView fileSubmissionResponse(
 			@RequestParam("file") MultipartFile file,
-			RedirectAttributes attributes) throws IOException, URISyntaxException, UnirestException {
-		ffs = new FileFormService(file);
-		Pair<Set<String>, Set<String>> res = new RecommenderService(ffs.movies()).recommend(attributes);
-		addRecommendations(attributes, res);
-		return new RedirectView(formRedirectAddress);
+			RedirectAttributes attributes) 
+					throws IOException, URISyntaxException, UnirestException 
+	{
+		return makeRecommendations(new FileFormService(file).movies(), attributes);
 	}
+	
+
 	private void addRecommendations(RedirectAttributes attributes, Pair<Set<String>, Set<String>> res) {
 		if (!(res.getValue0().isEmpty() && res.getValue1().isEmpty())) {
 			attributes.addAttribute("recommendations", res.getValue0());
 			attributes.addAttribute("recommendationposters", res.getValue1());
 		}
+	}
+	
+
+	private RedirectView makeRecommendations(Set<String> movies, RedirectAttributes attributes) 
+			throws MalformedURLException, UnsupportedEncodingException, URISyntaxException, UnirestException {
+		addRecommendations(attributes, new RecommenderService(movies).recommend(attributes));
+		return new RedirectView(formRedirectAddress);
 	}
 }

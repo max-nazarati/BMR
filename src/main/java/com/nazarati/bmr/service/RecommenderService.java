@@ -36,7 +36,9 @@ public class RecommenderService {
 		watchedMovies = movies;
 	}
 	
-	public Pair<Set<String>, Set<String>> recommend(RedirectAttributes attributes) throws URISyntaxException, MalformedURLException, UnirestException, UnsupportedEncodingException{
+	public Pair<Set<String>, Set<String>> recommend(RedirectAttributes attributes) 
+			throws URISyntaxException, MalformedURLException, UnirestException, UnsupportedEncodingException{
+
 		Set<String> recommendations = new LinkedHashSet<String>();
 		Set<String> recommendationPosters = new LinkedHashSet<String>();
 		String posterPath = "http://image.tmdb.org/t/p/w185/";
@@ -65,11 +67,8 @@ public class RecommenderService {
 			
 			// extract original_title from the recommendations JSON Object
 			JsonArray arr = je.getAsJsonObject().get("results").getAsJsonArray();
-			int recAmount = arr.size();
-			if (recAmount > 5 && false)
-				recAmount /= 2;
-			// decrease amount of recommendations to make sure that they fit into http header
-			for (int i = 0; i < recAmount; i++) {
+			
+			for (int i = 0; i < arr.size(); i++) {
 				if (!arr.get(i).getAsJsonObject().get("original_title").isJsonNull()) {
 					recommendations.add(arr.get(i).getAsJsonObject()
 						.get("original_title").getAsString());
