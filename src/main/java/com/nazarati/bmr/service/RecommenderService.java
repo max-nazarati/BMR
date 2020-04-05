@@ -75,14 +75,14 @@ public class RecommenderService {
 						.get("original_title").getAsString());
 				}
 				else {
-					recommendations.add("");
+					recommendations.add(Integer.toString(i));
 				}
 				if (!arr.get(i).getAsJsonObject().get("poster_path").isJsonNull()) {
 					recommendationPosters.add(posterPath + arr.get(i).getAsJsonObject()
 						.get("poster_path").getAsString());
 				}
 				else {
-					recommendationPosters.add("");
+					recommendationPosters.add(Integer.toString(i));
 				}
 			}
 		}
