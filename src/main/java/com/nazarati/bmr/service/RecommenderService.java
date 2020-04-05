@@ -28,7 +28,7 @@ public class RecommenderService
 {
 	private Set<String> watchedMovies;
 	private String tmdb = "http://api.themoviedb.org/3";
-	private String key = APISecrets.apiKey();
+	private final String key = APISecrets.apiKey();
 	public RecommenderService() 
 	{
 		// TODO Auto-generated constructor stub
