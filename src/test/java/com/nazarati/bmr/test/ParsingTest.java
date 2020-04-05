@@ -7,13 +7,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
 
 import com.nazarati.bmr.service.FileFormService;
 import com.nazarati.bmr.service.TextFormService;
 
-@SpringBootTest
 public class ParsingTest 
 {
 

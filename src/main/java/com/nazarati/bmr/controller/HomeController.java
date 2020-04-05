@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Set;
 
 import org.javatuples.Pair;
@@ -24,13 +22,11 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import com.nazarati.bmr.service.FileFormService;
 import com.nazarati.bmr.service.RecommenderService;
 import com.nazarati.bmr.service.TextFormService;
-import com.nazarati.bmr.storage.StorageService;
 
 @Controller
 public class HomeController 
 {
 	private String homepage = "homepage";
-	private final StorageService storageService;
 	private FileFormService ffs;
 	private String formRedirectAddress = "/recommendations";
 	
@@ -42,8 +38,7 @@ public class HomeController
 	
 
 	@Autowired
-	public HomeController(StorageService storageService) {
-		this.storageService = storageService;
+	public HomeController() {
 	}
 	
 
