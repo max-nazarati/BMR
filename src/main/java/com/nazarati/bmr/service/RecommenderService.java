@@ -65,8 +65,11 @@ public class RecommenderService {
 			
 			// extract original_title from the recommendations JSON Object
 			JsonArray arr = je.getAsJsonObject().get("results").getAsJsonArray();
-			// only take the top 25% of the suggestions
-			for (int i = 0; i < arr.size(); i++) {
+			int recAmount = arr.size();
+			if (recAmount > 5 && false)
+				recAmount /= 2;
+			// decrease amount of recommendations to make sure that they fit into http header
+			for (int i = 0; i < recAmount; i++) {
 				if (!arr.get(i).getAsJsonObject().get("original_title").isJsonNull()) {
 					recommendations.add(arr.get(i).getAsJsonObject()
 						.get("original_title").getAsString());

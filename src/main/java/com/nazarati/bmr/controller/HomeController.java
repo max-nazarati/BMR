@@ -31,6 +31,7 @@ public class HomeController {
 	private String homepage = "homepage";
 	private final StorageService storageService;
 	private FileFormService ffs;
+	private String formRedirectAddress = "/recommendations";
 	
 	public FileFormService ffs() {
 		return ffs;
@@ -40,7 +41,12 @@ public class HomeController {
 		this.storageService = storageService;
 	}
 	@GetMapping("/")
-	public String homepageController(
+	public String homepageController() {
+		return homepage;
+	}
+	
+	@GetMapping("/recommendations")
+	public String recommendationsResponse(
 			@ModelAttribute(name="recommendations") String recs,
 			@ModelAttribute(name="recommendationposters") String posters,
 			@ModelAttribute(name="badmovie") String badMovieError,
@@ -68,7 +74,7 @@ public class HomeController {
 		Pair<Set<String>, Set<String>> res = rs.recommend(attributes);
 		addRecommendations(attributes, res);
 
-		return new RedirectView("/");
+		return new RedirectView(formRedirectAddress);
 	}
 	
 	@PostMapping("/filesubmission")
@@ -78,7 +84,7 @@ public class HomeController {
 		ffs = new FileFormService(file);
 		Pair<Set<String>, Set<String>> res = new RecommenderService(ffs.movies()).recommend(attributes);
 		addRecommendations(attributes, res);
-		return new RedirectView("/");
+		return new RedirectView(formRedirectAddress);
 	}
 	private void addRecommendations(RedirectAttributes attributes, Pair<Set<String>, Set<String>> res) {
 		if (!(res.getValue0().isEmpty() && res.getValue1().isEmpty())) {
