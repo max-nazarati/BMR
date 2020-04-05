@@ -34,20 +34,26 @@ public class HomeController
 	private FileFormService ffs;
 	private String formRedirectAddress = "/recommendations";
 	
+
 	public FileFormService ffs() 
 	{
 		return ffs;
 	}
+	
+
 	@Autowired
 	public HomeController(StorageService storageService) {
 		this.storageService = storageService;
 	}
+	
+
 	@GetMapping("/")
 	public String homepageController() 
 	{
 		return homepage;
 	}
 	
+
 	@GetMapping("/recommendations")
 	public String recommendationsResponse(
 			@ModelAttribute(name="recommendations") String recs,
@@ -68,15 +74,17 @@ public class HomeController
 		return homepage;
 	}
 	
+
 	@PostMapping("/textsubmission")
 	public RedirectView textSubmissionResponse(
 			@RequestParam("movies") String movieString,
 			RedirectAttributes attributes) 
-					throws UnirestException, MalformedURLException, URISyntaxException, UnsupportedEncodingException 
+					throws MalformedURLException, UnsupportedEncodingException, URISyntaxException, UnirestException 
 	{	
 		return makeRecommendations(new TextFormService(movieString).movies(), attributes);
 	}
 	
+
 	@PostMapping("/filesubmission")
 	public RedirectView fileSubmissionResponse(
 			@RequestParam("file") MultipartFile file,

@@ -11,18 +11,25 @@ public class TextFormService
 {
 	private Set<String> movies;
 	
+
 	public Set<String> movies()
 	{
 		return movies;
 	}
+	
+
 	public TextFormService() 
 	{
 		
 	}
+	
+
 	public TextFormService(String movies) 
 	{
 		this.movies = parseMovieString(movies);
 	}
+	
+
 	private Set<String> parseMovieString(String movies) 
 	{
 		// expecting movie titles to be separated by single quotes

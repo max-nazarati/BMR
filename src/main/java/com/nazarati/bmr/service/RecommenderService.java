@@ -12,8 +12,6 @@ import org.javatuples.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
@@ -29,26 +27,28 @@ public class RecommenderService
 	private Set<String> watchedMovies;
 	private String tmdb = "http://api.themoviedb.org/3";
 	private final String key = APISecrets.apiKey();
+	
+
 	public RecommenderService() 
 	{
 		// TODO Auto-generated constructor stub
 	}
 	
+
 	public RecommenderService(Set<String> movies) 
 	{
 		watchedMovies = movies;
 	}
 	
-	public Pair<Set<String>, Set<String>> recommend(RedirectAttributes attributes) 
-			throws URISyntaxException, MalformedURLException, UnirestException, UnsupportedEncodingException{
 
+	public Pair<Set<String>, Set<String>> recommend(RedirectAttributes attributes) 
+			throws UnsupportedEncodingException, UnirestException 
+		{
 		Set<String> recommendations = new LinkedHashSet<String>();
 		Set<String> recommendationPosters = new LinkedHashSet<String>();
 		String posterPath = "http://image.tmdb.org/t/p/w185/";
 		for (String movie : watchedMovies) 
 		{
-			
-			Gson gson = new GsonBuilder().setPrettyPrinting().create();
 			JsonParser jp = new JsonParser();
 			JsonElement je;
 			
@@ -57,14 +57,15 @@ public class RecommenderService
 			HttpResponse<JsonNode> resp = Unirest.get(tmdb + req).asJson();
 			je = jp.parse(resp.getBody().toString());
 			
+			// if no IMDB was found return
 			if (je.getAsJsonObject().get("results").getAsJsonArray().size() == 0) 
 			{
 				attributes.addAttribute("badmovie", true);
 				return new Pair<Set<String>, Set<String>>(recommendations, recommendationPosters);
 			}
+
 			int movieId = je.getAsJsonObject().get("results")
 					.getAsJsonArray().get(0).getAsJsonObject().get("id").getAsInt();
-			
 			// use now known IMDB ID to search for recommended movies
 			String req2 = "/movie/" + movieId + "/recommendations?" + key;
 			HttpResponse<JsonNode> resp2 = Unirest.get(tmdb + req2).asJson();
@@ -99,6 +100,7 @@ public class RecommenderService
 		return new Pair<Set<String>, Set<String>>(recommendations, recommendationPosters);
 	}
 	
+
 	private String encode(String val) throws UnsupportedEncodingException 
 	{
 		return URLEncoder.encode(val, StandardCharsets.UTF_8.toString());

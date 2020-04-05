@@ -28,11 +28,13 @@ public class BmrSmokeTest {
 	
 	private String homepage = "homepage.html";
 
+
 	@Test
 	public void contextLoads() throws Exception {
 		assertThat(controller).isNotNull();
 	}
 	
+
 	@Test
 	public void homepageControllerStartingBehaviourTest() throws Exception {
 		mockMvc.perform(get("/")).andExpect(view().name(homepage));
