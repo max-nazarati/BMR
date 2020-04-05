@@ -28,7 +28,7 @@ public class FormSubmissionTest
 	{
 		MockMultipartFile f1 = new MockMultipartFile("file", "file1", "text/plain", "random text\ntext".getBytes());
 		mvc.perform(multipart("/filesubmission").file(f1))
-		.andExpect(status().is(302));// TODO: Also check redirect address
+		.andExpect(status().is(302));
 		assertThat(controller.ffs().file().getOriginalFilename()).isEqualTo("file1");
 	}
 	
@@ -37,6 +37,6 @@ public class FormSubmissionTest
 	public void textReceivedTest() throws Exception 
 	{
 		mvc.perform(post("/textsubmission").param("movies", "'moviea' 'movieb'"))
-		.andExpect(status().is(302));// TODO: Also check redirect address
+		.andExpect(status().is(302));
 	}
 }
