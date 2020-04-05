@@ -27,13 +27,15 @@ import com.nazarati.bmr.service.TextFormService;
 import com.nazarati.bmr.storage.StorageService;
 
 @Controller
-public class HomeController {
+public class HomeController 
+{
 	private String homepage = "homepage";
 	private final StorageService storageService;
 	private FileFormService ffs;
 	private String formRedirectAddress = "/recommendations";
 	
-	public FileFormService ffs() {
+	public FileFormService ffs() 
+	{
 		return ffs;
 	}
 	@Autowired
@@ -41,7 +43,8 @@ public class HomeController {
 		this.storageService = storageService;
 	}
 	@GetMapping("/")
-	public String homepageController() {
+	public String homepageController() 
+	{
 		return homepage;
 	}
 	
@@ -53,7 +56,8 @@ public class HomeController {
 			Model model) {
 		model.addAttribute("successfulquery", false);
 		
-		if (!recs.isEmpty() && !posters.isEmpty()) {
+		if (!recs.isEmpty() && !posters.isEmpty()) 
+		{
 			model.addAttribute("successfulquery", true);
 			model.addAttribute("recommendations", recs.split(","));
 			model.addAttribute("recommendationposters", posters.split(","));	
@@ -83,7 +87,8 @@ public class HomeController {
 	}
 	
 
-	private void addRecommendations(RedirectAttributes attributes, Pair<Set<String>, Set<String>> res) {
+	private void addRecommendations(RedirectAttributes attributes, Pair<Set<String>, Set<String>> res) 
+	{
 		if (!(res.getValue0().isEmpty() && res.getValue1().isEmpty())) {
 			attributes.addAttribute("recommendations", res.getValue0());
 			attributes.addAttribute("recommendationposters", res.getValue1());
@@ -92,7 +97,8 @@ public class HomeController {
 	
 
 	private RedirectView makeRecommendations(Set<String> movies, RedirectAttributes attributes) 
-			throws MalformedURLException, UnsupportedEncodingException, URISyntaxException, UnirestException {
+			throws MalformedURLException, UnsupportedEncodingException, URISyntaxException, UnirestException 
+	{
 		addRecommendations(attributes, new RecommenderService(movies).recommend(attributes));
 		return new RedirectView(formRedirectAddress);
 	}

@@ -22,7 +22,8 @@ import com.nazarati.bmr.service.TextFormService;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class FormSubmissionTest {
+public class FormSubmissionTest 
+{
 	@Autowired
 	private HomeController controller;
 	@Autowired
@@ -30,7 +31,8 @@ public class FormSubmissionTest {
 	
 	
 	@Test
-	public void fileReceivedTest() throws Exception {
+	public void fileReceivedTest() throws Exception 
+	{
 		MockMultipartFile f1 = new MockMultipartFile("file", "file1", "text/plain", "random text\ntext".getBytes());
 		mvc.perform(multipart("/filesubmission").file(f1))
 		.andExpect(status().is(302));// TODO: Also check redirect address
@@ -39,7 +41,8 @@ public class FormSubmissionTest {
 	
 	
 	@Test
-	public void textReceivedTest() throws Exception {
+	public void textReceivedTest() throws Exception 
+	{
 		mvc.perform(post("/textsubmission").param("movies", "'moviea' 'movieb'"))
 		.andExpect(status().is(302));// TODO: Also check redirect address
 	}

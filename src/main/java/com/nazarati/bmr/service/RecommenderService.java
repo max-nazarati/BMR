@@ -24,15 +24,18 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import com.nazarati.bmr.secretystuff.APISecrets;
 
 @Service
-public class RecommenderService {
+public class RecommenderService 
+{
 	private Set<String> watchedMovies;
 	private String tmdb = "http://api.themoviedb.org/3";
 	private String key = APISecrets.apiKey();
-	public RecommenderService() {
+	public RecommenderService() 
+	{
 		// TODO Auto-generated constructor stub
 	}
 	
-	public RecommenderService(Set<String> movies) {
+	public RecommenderService(Set<String> movies) 
+	{
 		watchedMovies = movies;
 	}
 	
@@ -42,7 +45,8 @@ public class RecommenderService {
 		Set<String> recommendations = new LinkedHashSet<String>();
 		Set<String> recommendationPosters = new LinkedHashSet<String>();
 		String posterPath = "http://image.tmdb.org/t/p/w185/";
-		for (String movie : watchedMovies) {
+		for (String movie : watchedMovies) 
+		{
 			
 			Gson gson = new GsonBuilder().setPrettyPrinting().create();
 			JsonParser jp = new JsonParser();
@@ -53,7 +57,8 @@ public class RecommenderService {
 			HttpResponse<JsonNode> resp = Unirest.get(tmdb + req).asJson();
 			je = jp.parse(resp.getBody().toString());
 			
-			if (je.getAsJsonObject().get("results").getAsJsonArray().size() == 0) {
+			if (je.getAsJsonObject().get("results").getAsJsonArray().size() == 0) 
+			{
 				attributes.addAttribute("badmovie", true);
 				return new Pair<Set<String>, Set<String>>(recommendations, recommendationPosters);
 			}
@@ -68,19 +73,24 @@ public class RecommenderService {
 			// extract original_title from the recommendations JSON Object
 			JsonArray arr = je.getAsJsonObject().get("results").getAsJsonArray();
 			
-			for (int i = 0; i < arr.size(); i++) {
-				if (!arr.get(i).getAsJsonObject().get("original_title").isJsonNull()) {
+			for (int i = 0; i < arr.size(); i++) 
+			{
+				if (!arr.get(i).getAsJsonObject().get("original_title").isJsonNull()) 
+				{
 					recommendations.add(arr.get(i).getAsJsonObject()
 						.get("original_title").getAsString());
 				}
-				else {
+				else 
+				{
 					recommendations.add(Integer.toString(i));
 				}
-				if (!arr.get(i).getAsJsonObject().get("poster_path").isJsonNull()) {
+				if (!arr.get(i).getAsJsonObject().get("poster_path").isJsonNull()) 
+				{
 					recommendationPosters.add(posterPath + arr.get(i).getAsJsonObject()
 						.get("poster_path").getAsString());
 				}
-				else {
+				else 
+				{
 					recommendationPosters.add(Integer.toString(i));
 				}
 			}
@@ -89,7 +99,8 @@ public class RecommenderService {
 		return new Pair<Set<String>, Set<String>>(recommendations, recommendationPosters);
 	}
 	
-	private String encode(String val) throws UnsupportedEncodingException {
+	private String encode(String val) throws UnsupportedEncodingException 
+	{
 		return URLEncoder.encode(val, StandardCharsets.UTF_8.toString());
 	}
 }

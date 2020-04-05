@@ -14,11 +14,13 @@ import com.nazarati.bmr.service.FileFormService;
 import com.nazarati.bmr.service.TextFormService;
 
 @SpringBootTest
-public class ParsingTest {
+public class ParsingTest 
+{
 
 
 	@Test
-	public void fileParseTest() throws Exception {
+	public void fileParseTest() throws Exception 
+	{
 		MockMultipartFile f1 = new MockMultipartFile("f1", "file1", "text/plain", "random text\ntext".getBytes());
 		MockMultipartFile f2 = new MockMultipartFile("f2", "file2", "text/plain", "    \n  ".getBytes());
 	
@@ -33,7 +35,8 @@ public class ParsingTest {
 	
 	
 	@Test
-	public void parseTest() throws Exception {
+	public void parseTest() throws Exception 
+	{
 		TextFormService tfs;
 		String s1 = "'a' 'b'";
 		Set<String> set1 = new HashSet<String>(Arrays.asList("a", "b"));

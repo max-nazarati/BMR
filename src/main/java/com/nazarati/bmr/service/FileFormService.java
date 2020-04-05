@@ -9,31 +9,37 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
-public class FileFormService {
+public class FileFormService 
+{
 	private MultipartFile file;
 	private Set<String> movies = new LinkedHashSet<String>();
 
-	public FileFormService() {
+	public FileFormService() 
+	{
 	}
 
 
-	public FileFormService(MultipartFile file) throws IOException {
+	public FileFormService(MultipartFile file) throws IOException 
+	{
 		this.file = file;
 		movies = parseFile();
 	}
 
 
-	public MultipartFile file() {
+	public MultipartFile file() 
+	{
 		return file;
 	}
 
 
-	public Set<String> movies(){
+	public Set<String> movies()
+	{
 		return movies;
 	}
 
 
-	public Set<String> parseFile() throws IOException{
+	public Set<String> parseFile() throws IOException
+	{
 		String s = new String(file.getBytes(), "UTF-8");
 		Set<String> res = new LinkedHashSet<String>(Arrays.asList(s.split("\r\n|\n|\r")));
 		return res;
